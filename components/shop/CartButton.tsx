@@ -1,22 +1,22 @@
-
+import { useEffect } from 'react';
 import useStore from '../../store/Store';
 import { Cart } from './Cart';
 
 export const CartButton = () => {
+    const items = useStore((state) => state.items)
     const totalItems = useStore((state) => state.totalQuantity)
     const isCartVisible = useStore(state => state.isCartVisible)
+    const showCart = useStore(state => state.showCart)
     const hideCart = useStore(state => state.hideCart)
-    const showCart = useStore(state => state.hideCart)
 
-    const toggleCartHandler = () => {
+    function toggleCartHandler() {
         if (isCartVisible) {
+            console.log(isCartVisible)
             hideCart()
         } else {
             showCart()
         }
     }
-
-
 
     return (
         <div className='relative'>
@@ -24,7 +24,7 @@ export const CartButton = () => {
                 <span className=''>My Cart</span>
                 <span className='bg-pink-100 text-gray-900 w-10 h-10 rounded-full leading-10'>{totalItems}</span>
             </button>
-            {isCartVisible && <Cart />}
+            {isCartVisible && <Cart items={items} />}
         </div>
     );
 };

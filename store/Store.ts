@@ -1,4 +1,3 @@
-import { INSPECT_MAX_BYTES } from 'buffer';
 import create from 'zustand';
 
 export interface LoginSlice {
@@ -15,9 +14,9 @@ export interface CartSlice {
     items: CartItemWithStats[],
     totalQuantity: number,
     totalAmount: number,
-    addToCart: Function,
-    removeFromCart: Function,
-    replaceCart: Function,
+    addToCart: (newItem: CartItem) => void,
+    removeFromCart: (itemToRemove: CartItem['id']) => void,
+    replaceCart: (newCart: CartItemWithStats[]) => void,
 }
 
 export interface CartItem {
@@ -93,13 +92,22 @@ const useStore = create<GeneralState>(
             addToCart: (newItem: CartItem) => {
                 const existingItem = get().items.find(item => item.id === newItem.id)
                 if (!existingItem && typeof existingItem === 'undefined') {
-                    const existingItem: CartItemWithStats = { ...newItem, quantity: 1, totalAmount: newItem.price };
-                    get().items.push(existingItem);
+                    const toAdd: CartItemWithStats = { ...newItem, quantity: 1, totalAmount: newItem.price };
+                    set(state => {
+                        return {
+                            items: [...state.items, toAdd]
+                        }
+                    })
                 } else {
                     existingItem.quantity++;
                     existingItem.totalAmount += newItem.price
                 }
-                get().totalQuantity++;
+                set(state => {
+                    return {
+                        totalQuantity: state.totalQuantity + 1
+                    }
+                })
+                localStorage.setItem('cart', JSON.stringify(get().items))
             },
             removeFromCart: (itemToRemove: CartItem['id']) => {
 
@@ -116,13 +124,18 @@ const useStore = create<GeneralState>(
                     existingItem!.quantity--;
                     existingItem!.totalAmount -= existingItem!.price;
                 }
-                set((state) => { return { totalQuantity: state.totalQuantity-- } })
+                set((state) => { return { totalQuantity: state.totalQuantity - 1 } })
+                localStorage.setItem('cart', JSON.stringify(get().items))
             },
-            replaceCart: () => {
+            replaceCart: (newCart: CartItemWithStats[]) => {
                 set((state) => {
                     return {
+                        items: newCart,
                         totalQuantity: state.items.reduce((acc, obj) => {
                             return acc + obj.quantity
+                        }, 0),
+                        totalAmount: state.items.reduce((acc, obj) => {
+                            return acc + obj.price
                         }, 0)
                     }
                 })
