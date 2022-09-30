@@ -93,13 +93,21 @@ const useStore = create<GeneralState>(
             addToCart: (newItem: CartItem) => {
                 const existingItem = get().items.find(item => item.id === newItem.id)
                 if (!existingItem && typeof existingItem === 'undefined') {
-                    const existingItem: CartItemWithStats = { ...newItem, quantity: 1, totalAmount: newItem.price };
-                    get().items.push(existingItem);
+                    const toAdd: CartItemWithStats = { ...newItem, quantity: 1, totalAmount: newItem.price };
+                    set(state => {
+                        return {
+                            items: [...state.items, toAdd]
+                        }
+                    })
                 } else {
                     existingItem.quantity++;
                     existingItem.totalAmount += newItem.price
                 }
-                get().totalQuantity++;
+                set(state => {
+                    return {
+                        totalQuantity: state.totalQuantity + 1
+                    }
+                })
             },
             removeFromCart: (itemToRemove: CartItem['id']) => {
 
@@ -116,7 +124,7 @@ const useStore = create<GeneralState>(
                     existingItem!.quantity--;
                     existingItem!.totalAmount -= existingItem!.price;
                 }
-                set((state) => { return { totalQuantity: state.totalQuantity-- } })
+                set((state) => { return { totalQuantity: state.totalQuantity - 1 } })
             },
             replaceCart: () => {
                 set((state) => {

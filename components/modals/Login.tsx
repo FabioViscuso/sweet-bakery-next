@@ -20,6 +20,8 @@ const Login = () => {
         if (username.length >= 6 && password.length >= 8) {
             const accessToken = 'abc123'
             login(username, accessToken)
+            hideLoginModal()
+            localStorage.setItem('currentUser', JSON.stringify({ username: username, accessToken: accessToken }))
         } else {
             alert('check your inputs')
         }
