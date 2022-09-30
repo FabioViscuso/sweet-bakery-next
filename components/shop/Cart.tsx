@@ -3,6 +3,7 @@ import { CartItemComponent } from "./CartItem"
 
 // Import RootState and CartItemWithStats types
 import { CartItemWithStats } from "../../store/Store"
+import { useEffect } from "react"
 interface Props {
     items: CartItemWithStats[]
 }

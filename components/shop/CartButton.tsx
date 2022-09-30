@@ -18,10 +18,6 @@ export const CartButton = () => {
         }
     }
 
-    useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(items))
-    }, [items])
-
     return (
         <div className='relative'>
             <button className='flex flex-row gap-4 items-center font-indieflower text-2xl' onClick={toggleCartHandler}>
