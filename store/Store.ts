@@ -77,6 +77,8 @@ const useStore = create<GeneralState>(
                 }
             }),
             logoutUser: () => set(() => {
+                localStorage.removeItem('currentUser')
+                localStorage.removeItem('cart');
                 return {
                     isLogged: false,
                     currentUser: {
@@ -131,10 +133,10 @@ const useStore = create<GeneralState>(
                 set((state) => {
                     return {
                         items: newCart,
-                        totalQuantity: state.items.reduce((acc, obj) => {
+                        totalQuantity: newCart.reduce((acc, obj) => {
                             return acc + obj.quantity
                         }, 0),
-                        totalAmount: state.items.reduce((acc, obj) => {
+                        totalAmount: newCart.reduce((acc, obj) => {
                             return acc + obj.price
                         }, 0)
                     }
