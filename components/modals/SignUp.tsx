@@ -19,7 +19,7 @@ const SignUp = () => {
         const email = emailInput.current!.value;
         const password = passwordInput.current!.value;
         if (username.length >= 6 && email.includes('@') && password.length >= 8) {
-            const response = await fetch('', {
+            const response = await fetch('/api/users/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -28,7 +28,8 @@ const SignUp = () => {
             })
 
             if (response.ok) {
-
+                alert('user created')
+                hideSignupModal()
             } else {
                 alert('could not sign up')
             }
