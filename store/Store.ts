@@ -77,8 +77,7 @@ const useStore = create<GeneralState>(
                 }
             }),
             logoutUser: () => set(() => {
-                localStorage.removeItem('currentUser')
-                localStorage.removeItem('cart');
+                localStorage.removeItem('currentUser');
                 return {
                     isLogged: false,
                     currentUser: {
@@ -87,6 +86,8 @@ const useStore = create<GeneralState>(
                     }
                 }
             }),
+
+
             /* CART */
             items: [],
             totalQuantity: 0,
@@ -102,32 +103,25 @@ const useStore = create<GeneralState>(
                     })
                 } else {
                     existingItem.quantity++;
-                    existingItem.totalAmount += newItem.price
                 }
-                set(state => {
-                    return {
-                        totalQuantity: state.totalQuantity + 1
-                    }
-                })
-                localStorage.setItem('cart', JSON.stringify(get().items))
+                set(state => { return { totalAmount: Number((state.totalAmount + newItem.price).toFixed(2)) } })
+                set(state => { return { totalQuantity: state.totalQuantity + 1 } })
+                localStorage.setItem(`cartFor${get().currentUser.username}`, JSON.stringify(get().items))
             },
             removeFromCart: (itemToRemove: CartItem['id']) => {
-
                 // extract the ID
                 const id = itemToRemove;
 
-                // remove funct is only available in places where "existingItem" exists
-                // so no need to check if the element is undefined
-                const existingItem = get().items.find((item) => item.id === id);
+                const item = get().items.find((item) => item.id === id);
 
-                if (existingItem!.quantity === 1) {
+                if (item!.quantity === 1) {
                     set((state) => { return { items: state.items.filter((item) => item.id !== id) } })
                 } else {
-                    existingItem!.quantity--;
-                    existingItem!.totalAmount -= existingItem!.price;
+                    item!.quantity--;
                 }
+                set(state => { return { totalAmount: Number((state.totalAmount - item!.price).toFixed(2)) } })
                 set((state) => { return { totalQuantity: state.totalQuantity - 1 } })
-                localStorage.setItem('cart', JSON.stringify(get().items))
+                localStorage.setItem(`cartFor${get().currentUser.username}`, JSON.stringify(get().items))
             },
             replaceCart: (newCart: CartItemWithStats[]) => {
                 set((state) => {
@@ -137,17 +131,20 @@ const useStore = create<GeneralState>(
                             return acc + obj.quantity
                         }, 0),
                         totalAmount: newCart.reduce((acc, obj) => {
-                            return acc + obj.price
+                            return acc + obj.price * obj.quantity
                         }, 0)
                     }
                 })
             },
+
 
             /* NOTIFICATION */
             isOkStatus: false,
             message: '',
             isNotificationPopupOpen: false,
             setNotificationContent: (isOk, message) => set((state) => ({ isOkStatus: isOk, message: message })),
+
+
             /* UI COMPONENTS */
             isLoginModalOpen: false,
             isSignupModalOpen: false,
