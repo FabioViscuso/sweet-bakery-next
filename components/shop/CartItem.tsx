@@ -3,10 +3,12 @@
 import useStore, { CartItemWithStats } from '../../store/Store';
 
 export const CartItemComponent = (props: CartItemWithStats) => {
-    const { id, title, quantity, totalAmount, price } = props;
+    const { id, title, description, imgUrl, quantity, totalAmount, price } = props;
     const currentItem = {
         id: props.id,
         title: props.title,
+        description: props.description,
+        imgUrl: props.imgUrl,
         quantity: props.quantity,
         totalAmount: props.totalAmount,
         price: props.price
