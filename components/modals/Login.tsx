@@ -13,15 +13,27 @@ const Login = () => {
     const usernameInput = useRef<HTMLInputElement>(null);
     const passwordInput = useRef<HTMLInputElement>(null);
 
-    const loginHandler = (event: React.FormEvent) => {
+    const loginHandler = async (event: React.FormEvent) => {
         event.preventDefault();
         const username = usernameInput.current!.value;
         const password = passwordInput.current!.value;
         if (username.length >= 6 && password.length >= 8) {
-            const accessToken = 'abc123'
-            login(username, accessToken)
-            hideLoginModal()
-            localStorage.setItem('currentUser', JSON.stringify({ username: username, accessToken: accessToken }))
+            const response = await fetch('api/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: username, password: password })
+            })
+            if (response.ok) {
+                const data = await response.json()
+                login(data.username, data.accessToken)
+                hideLoginModal()
+                localStorage.setItem('currentUser', JSON.stringify({ username: data.username, accessToken: data.accessToken }))
+            } else {
+                const error = await response.json()
+                alert(JSON.stringify(error))
+            }
         } else {
             alert('check your inputs')
         }
