@@ -10,8 +10,8 @@ import '../styles/globals.css'
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const formattedPath = router.pathname.replace(/\//, '').replace(/-/, ' ');
-  const login = useStore(state => state.loginUser)
-  const initCart = useStore(state => state.replaceCart)
+  const login = useStore(state => state.loginUser);
+  const initCart = useStore(state => state.replaceCart);
 
   useEffect(() => {
     // try to fetch the stored user
@@ -20,13 +20,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (storedUser && typeof storedUser !== 'undefined') {
       login(storedUser.username, storedUser.accessToken)
       // try to fetch the stored cart
-      const localCart = JSON.parse(localStorage.getItem('cart') as string)
+      const localCart = JSON.parse(localStorage.getItem(`cartFor${storedUser.username}`) as string)
       // if present, put it as the actual cart in the store
       if (localCart && localCart.length > 0) {
         initCart(localCart)
       }
     }
-  })
+  }, [login, initCart])
 
   return (
     <>

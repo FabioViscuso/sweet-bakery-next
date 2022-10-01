@@ -23,7 +23,6 @@ export const Navbar = () => {
     const showSignupModal = useStore(state => state.showSignupModal)
     const logout = useStore(state => state.logoutUser)
 
-
     return (
         <nav className="flex flex-row justify-between items-center px-2 md:px-10 h-24 sticky top-0 left-0 right-0 z-100 bg-[#e2c3c8]">
             <Link href='/'><Image width={80} height={80} className="rounded-full border-2 border-red-200 cursor-pointer" src={topbarIcon} alt="nav-logo" /></Link>
@@ -31,8 +30,8 @@ export const Navbar = () => {
                 {!isLogged && <button onClick={showLoginModal} className="font-indieflower text-2xl">Log In</button>}
                 {isLogged && <button onClick={logout} className="font-indieflower text-2xl">Log Out</button>}
                 {!isLogged && <button onClick={showSignupModal} className="font-indieflower text-2xl">Sign Up</button>}
-                {router.pathname !== 'shop' && <Link href='/shop'><button className="font-indieflower text-2xl">Shop</button></Link>}
-                {(isLogged && router.pathname !== 'account') && <Link href='account'><button className="font-indieflower text-2xl">Account</button></Link>}
+                {router.pathname !== '/shop' && <Link href='/shop'><button className="font-indieflower text-2xl">Shop</button></Link>}
+                {(isLogged && router.pathname !== '/account') && <Link href='account'><button className="font-indieflower text-2xl">Account</button></Link>}
                 {isLogged && <CartButton />}
             </div>
             {isLoginModalOpen && <LoginModal />}

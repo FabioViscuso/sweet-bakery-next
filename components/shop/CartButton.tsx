@@ -18,6 +18,24 @@ export const CartButton = () => {
         }
     }
 
+    const login = useStore(state => state.loginUser);
+    const initCart = useStore(state => state.replaceCart);
+
+    useEffect(() => {
+        // try to fetch the stored user
+        const storedUser: { username: string, accessToken: string } = JSON.parse(localStorage.getItem('currentUser') as string);
+        // if present, log automatically
+        if (storedUser && typeof storedUser !== 'undefined') {
+            login(storedUser.username, storedUser.accessToken)
+            // try to fetch the stored cart
+            const localCart = JSON.parse(localStorage.getItem(`cartFor${storedUser.username}`) as string)
+            // if present, put it as the actual cart in the store
+            if (localCart && localCart.length > 0) {
+                initCart(localCart)
+            }
+        }
+    }, [login, initCart])
+
     return (
         <div className='relative'>
             <button className='flex flex-row gap-4 items-center font-indieflower text-2xl' onClick={toggleCartHandler}>

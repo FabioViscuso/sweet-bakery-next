@@ -1,4 +1,16 @@
+import Router from "next/router";
+import { useEffect } from "react";
+import useStore from "../store/Store";
+
 const Account = () => {
+
+    /* Check if user is logged, if not push back to homepage */
+    const isLogged = useStore(state => state.isLogged)
+    useEffect(() => {
+        if (!isLogged) {
+            Router.push('/');
+        }
+    }, [isLogged])
 
     return (
         <div className="flex flex-col min-h-screen items-center px-2">
