@@ -27,6 +27,7 @@ const Login = () => {
             })
             if (response.ok) {
                 const data = await response.json()
+                console.log(data)
                 login(data.username, data.email, data.accessToken)
                 hideLoginModal()
                 localStorage.setItem('currentUser', JSON.stringify({ username: data.username, email: data.email, accessToken: data.accessToken }))
