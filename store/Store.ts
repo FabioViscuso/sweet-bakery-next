@@ -4,9 +4,10 @@ export interface LoginSlice {
     isLogged: boolean,
     currentUser: {
         username: string,
+        email: string,
         accessToken: string,
-    }
-    loginUser: (loggedUser: string, userToken: string) => void
+    },
+    loginUser: (loggedUser: string, userEmail: string, userToken: string) => void
     logoutUser: () => void
 }
 
@@ -65,15 +66,17 @@ const useStore = create<GeneralState>(
             isLogged: false,
             currentUser: {
                 username: '',
+                email: '',
                 accessToken: '',
             },
-            loginUser: (loggedUser: string, userToken: string) => set(() => {
+            loginUser: (loggedUser: string, userEmail: string, userToken: string) => set(() => {
                 return {
                     isLogged: true,
                     currentUser: {
                         username: loggedUser,
+                        email: userEmail,
                         accessToken: userToken
-                    }
+                    },
                 }
             }),
             logoutUser: () => set(() => {
@@ -82,6 +85,7 @@ const useStore = create<GeneralState>(
                     isLogged: false,
                     currentUser: {
                         username: '',
+                        email: '',
                         accessToken: ''
                     }
                 }

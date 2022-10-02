@@ -28,7 +28,6 @@ const SignUp = () => {
             })
 
             if (response.ok) {
-                alert('user created')
                 hideSignupModal()
             } else {
                 alert('could not sign up')
@@ -50,7 +49,7 @@ const SignUp = () => {
 
                     {/* EMAIL FIELD */}
                     <label htmlFor="signupemail" className="text-gray-800 text-lg font-indieflower leading-tight tracking-normal">email</label>
-                    <input type="email" id="signupemail" name="signupemail" autoFocus ref={emailInput} className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-pink-300 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="" />
+                    <input type="email" id="signupemail" name="signupemail" ref={emailInput} className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-pink-300 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="" />
 
                     {/* PASSWORD FIELD */}
                     <label htmlFor="signuppassword" className="text-gray-800 text-lg font-indieflower leading-tight tracking-normal">Password</label>

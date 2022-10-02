@@ -14,10 +14,10 @@ export const Cart = (props: Props) => {
 
     useEffect(() => {
         // try to fetch the stored user
-        const storedUser: { username: string, accessToken: string } = JSON.parse(localStorage.getItem('currentUser') as string);
+        const storedUser: { username: string, email: string, accessToken: string } = JSON.parse(localStorage.getItem('currentUser') as string);
         // if present, log automatically
         if (storedUser && typeof storedUser !== 'undefined') {
-            login(storedUser.username, storedUser.accessToken)
+            login(storedUser.username, storedUser.email, storedUser.accessToken)
             // try to fetch the stored cart
             const localCart = JSON.parse(localStorage.getItem(`cartFor${storedUser.username}`) as string)
             // if present, put it as the actual cart in the store
