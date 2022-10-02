@@ -3,11 +3,13 @@ import React, { useEffect, useRef } from "react";
 import useStore from "../store/Store";
 
 const Account = () => {
+    const usernameInputRef = useRef<HTMLInputElement>(null);
     const emailInputRef = useRef<HTMLInputElement>(null);
     const passInputRef = useRef<HTMLInputElement>(null);
     const isLogged = useStore(state => state.isLogged);
     const user = useStore(state => state.currentUser);
-    const login = useStore(state => state.loginUser)
+    const login = useStore(state => state.loginUser);
+    const logout = useStore(state => state.logoutUser);
     const resetCart = useStore(state => state.replaceCart);
 
     function clearCart() {
@@ -65,6 +67,31 @@ const Account = () => {
         }
     }
 
+    async function deleteUser(event: React.FormEvent) {
+        event.preventDefault()
+        let usernameInputValue = usernameInputRef.current!.value
+        if (usernameInputValue === user.username) {
+            const response = await fetch('api/users/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: usernameInputValue, accessToken: user.accessToken })
+            })
+
+            if (response.ok) {
+                usernameInputRef.current!.value = ''
+                localStorage.removeItem(`cartFor${user.username}`)
+                logout();
+            } else {
+                const data = await response.json()
+                alert(data.message)
+            }
+        } else {
+            alert('typed username is different from your username')
+        }
+    }
+
     useEffect(() => {
         if (!isLogged) {
             Router.push('/');
@@ -87,9 +114,9 @@ const Account = () => {
             </form>
             <h2 className="font-caveat text-4xl mt-10 mb-4">Other settings</h2>
             <button onClick={clearCart} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-300 transition duration-150 ease-in-out hover:bg-pink-300 bg-pink-200 rounded text-gray-900 hover:text-gray-900 px-8 py-2 mb-10 text-md">Clear Cart</button>
-            <form className="flex flex-col gap-5 items-center">
+            <form onSubmit={deleteUser} className="flex flex-col gap-5 items-center">
                 <label htmlFor="deleteaccount" className="text-gray-800 text-2xl font-indieflower leading-tight tracking-normal">Delete your account</label>
-                <input type='password' id="deleteaccount" name="deleteaccount" minLength={8} className="text-gray-600 focus:outline-none focus:border focus:border-pink-300 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="Retype your username" />
+                <input type='text' id="deleteaccount" name="deleteaccount" minLength={8} ref={usernameInputRef} className="text-gray-600 focus:outline-none focus:border focus:border-pink-300 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="Retype your username" />
                 <button type="submit" className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-300 transition duration-150 ease-in-out hover:bg-pink-300 bg-pink-200 rounded text-gray-900 hover:text-gray-900 px-8 py-2 text-md">Delete</button>
             </form>
         </div>
