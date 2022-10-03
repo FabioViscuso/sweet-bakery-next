@@ -1,5 +1,6 @@
 // import core dependencies
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 // import store
@@ -12,8 +13,7 @@ import { LoginModal } from "../modals/Login";
 import { SignUpModal } from "../modals/SignUp";
 
 // import assets
-import topbarIcon from '../../public/images/bakery-logo.png'
-import Image from 'next/image';
+import topbarIcon from '../../public/images/bakery-logo.png';
 
 export const Navbar = () => {
     const router = useRouter()
@@ -26,7 +26,7 @@ export const Navbar = () => {
 
     return (
         <nav className="flex flex-row justify-between items-center px-2 md:px-10 h-24 sticky top-0 left-0 right-0 z-100 bg-[#e2c3c8] bg-opacity-70 backdrop-blur-sm">
-            <Link href='/'><Image width={80} height={80} className="rounded-full border-2 border-red-200 cursor-pointer" src={topbarIcon} alt="nav-logo" /></Link>
+            <Image width={60} height={60} className="border-2 border-red-200 cursor-pointer" src={topbarIcon} alt="nav-logo" />
             <div className="flex flex-row items-center gap-6">
                 {router.pathname !== '/' && <Link href='/'><button className="font-indieflower text-2xl">Home</button></Link>}
                 {router.pathname !== '/shop' && <Link href='/shop'><button className="font-indieflower text-2xl">Shop</button></Link>}
