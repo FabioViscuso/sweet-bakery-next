@@ -1,11 +1,9 @@
 import { useRef } from "react";
-
-import useStore from "../store/Store";
+import useUIstore from "../store/UIstore";
 
 export default function useSignup() {
-    const setNotification = useStore(store => store.setNotificationContent);
-
-    const hideSignupModal = useStore(store => store.hideSignupModal);
+    const setNotification = useUIstore(store => store.setNotificationContent);
+    const hideSignupModal = useUIstore(store => store.hideSignupModal);
 
     const usernameInput = useRef<HTMLInputElement>(null);
     const emailInput = useRef<HTMLInputElement>(null);

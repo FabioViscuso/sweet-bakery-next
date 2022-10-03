@@ -1,9 +1,11 @@
-// import store
-// import types
-import useStore, { CartItemWithStats } from '../../store/Store';
+// import stores
+import useCartStore, { CartItemWithStats } from '../../lib/store/cartStore';
+import useLoginStore from '../../lib/store/loginStore';
 
 export const CartItemComponent = (props: CartItemWithStats) => {
     const { id, title, description, imgUrl, quantity, totalAmount, price } = props;
+    const user = useLoginStore(store => store.currentUser);
+    const items = useCartStore(store => store.items)
     const currentItem = {
         id: props.id,
         title: props.title,
@@ -13,13 +15,16 @@ export const CartItemComponent = (props: CartItemWithStats) => {
         totalAmount: props.totalAmount,
         price: props.price
     }
-    const addItem = useStore(state => state.addToCart)
-    const removeItem = useStore(state => state.removeFromCart)
+    const addItem = useCartStore(state => state.addToCart);
+    const removeItem = useCartStore(state => state.removeFromCart);
+
     function removeHandler() {
         removeItem(id)
+        localStorage.setItem(`cartFor${user.username}`, JSON.stringify(items))
     }
     function addHandler() {
         addItem(currentItem)
+        localStorage.setItem(`cartFor${user.username}`, JSON.stringify(items))
     }
     return (
         <li className='flex flex-row justify-between rounded-md bg-slate-200 font-caveat'>

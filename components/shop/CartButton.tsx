@@ -1,13 +1,20 @@
+// import hooks
 import { useEffect } from 'react';
-import useStore from '../../store/Store';
+
+// import stores
+import useLoginStore from '../../lib/store/loginStore';
+import useUIstore from '../../lib/store/UIstore';
+import useCartStore from '../../lib/store/cartStore';
+
+// import components
 import { Cart } from './Cart';
 
 export const CartButton = () => {
-    const items = useStore((state) => state.items)
-    const totalItems = useStore((state) => state.totalQuantity)
-    const isCartVisible = useStore(state => state.isCartVisible)
-    const showCart = useStore(state => state.showCart)
-    const hideCart = useStore(state => state.hideCart)
+    const items = useCartStore((state) => state.items)
+    const totalItems = useCartStore((state) => state.totalQuantity)
+    const isCartVisible = useUIstore(state => state.isCartVisible)
+    const showCart = useUIstore(state => state.showCart)
+    const hideCart = useUIstore(state => state.hideCart)
 
     function toggleCartHandler() {
         if (isCartVisible) {
@@ -18,8 +25,8 @@ export const CartButton = () => {
         }
     }
 
-    const login = useStore(state => state.loginUser);
-    const initCart = useStore(state => state.replaceCart);
+    const login = useLoginStore(state => state.loginUser);
+    const initCart = useCartStore(state => state.replaceCart);
 
     useEffect(() => {
         // try to fetch the stored user

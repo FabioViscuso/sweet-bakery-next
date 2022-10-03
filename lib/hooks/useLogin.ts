@@ -1,11 +1,12 @@
 import { useRef } from "react";
-import useStore from "../store/Store";
+import useLoginStore from "../store/loginStore";
+import useUIstore from "../store/UIstore";
 
 export default function useLogin() {
-    const hideLoginModal = useStore(store => store.hideLoginModal);
-    const login = useStore(store => store.loginUser);
+    const login = useLoginStore(store => store.loginUser);
 
-    const setNotification = useStore(store => store.setNotificationContent);
+    const hideLoginModal = useUIstore(store => store.hideLoginModal);
+    const setNotification = useUIstore(store => store.setNotificationContent);
 
     const usernameInput = useRef<HTMLInputElement>(null);
     const passwordInput = useRef<HTMLInputElement>(null);

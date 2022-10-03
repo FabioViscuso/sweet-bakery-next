@@ -1,11 +1,17 @@
-// import store
-import useStore, { CartItem } from "../../store/Store";
+// import stores
+import useLoginStore from "../../lib/store/loginStore";
+import useCartStore, { CartItem } from "../../lib/store/cartStore";
+import useUIstore from "../../lib/store/UIstore";
+import { useEffect } from "react";
 
 export const ProductItem = (props: CartItem) => {
+    const user = useLoginStore(store => store.currentUser);
+    const items = useCartStore(store => store.items);
+    const addItem = useCartStore(store => store.addToCart);
+    const showNotification = useUIstore(store => store.setNotificationContent);
 
-    const addItem = useStore(state => state.addToCart)
     const addToCartHandler = () => {
-        if (useStore.getState().isLogged) {
+        if (useLoginStore.getState().isLogged) {
             const newCartItem = {
                 id: props.id,
                 imgUrl: props.imgUrl,
@@ -13,11 +19,15 @@ export const ProductItem = (props: CartItem) => {
                 description: props.description,
                 price: props.price,
             }
-            addItem(newCartItem)
+            addItem(newCartItem);
         } else {
-            alert('Hello! Please login to start shopping')
+            showNotification(false, 'Hello! Please login to start shopping');
         }
     }
+
+    useEffect(() => {
+        localStorage.setItem(`cartFor${user.username}`, JSON.stringify(items));
+    }, [items, user.username])
 
     return (
         <li className='flex flex-row flex-wrap rounded-md bg-slate-100 w-full max-w-sm font-indieflower'>
@@ -29,7 +39,7 @@ export const ProductItem = (props: CartItem) => {
                 </header>
                 <p className='text-xl'>{props.description}</p>
             </div>
-            <button className='bg-pink-200 rounded-md w-full p-2 self-stretch' onClick={addToCartHandler}>Add to Cart</button>
+            <button className='bg-pink-200 rounded-b-md w-full p-2 self-stretch' onClick={addToCartHandler}>Add to Cart</button>
         </li>
     );
 };

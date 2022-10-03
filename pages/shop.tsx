@@ -1,6 +1,3 @@
-// Hooks import
-
-
 // Components import
 import { Products } from "../components/shop/Products"
 

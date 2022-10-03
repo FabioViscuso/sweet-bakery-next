@@ -1,16 +1,19 @@
+// import hooks
+import { useEffect } from "react";
+
 // Import components
 import { CartItemComponent } from "./CartItem"
 
-// Import RootState and CartItemWithStats types
-import useStore, { CartItemWithStats } from "../../store/Store"
-import { useEffect } from "react";
+// Import stores
+import useLoginStore from "../../lib/store/loginStore";
+import useCartStore, { CartItemWithStats } from "../../lib/store/cartStore";
 interface Props {
     items: CartItemWithStats[]
 }
 export const Cart = (props: Props) => {
-    const totalAmount = useStore(state => state.totalAmount);
-    const login = useStore(state => state.loginUser);
-    const initCart = useStore(state => state.replaceCart);
+    const login = useLoginStore(state => state.loginUser);
+    const totalAmount = useCartStore(state => state.totalAmount);
+    const initCart = useCartStore(state => state.replaceCart);
 
     useEffect(() => {
         // try to fetch the stored user

@@ -2,7 +2,7 @@
 import { createPortal } from "react-dom";
 
 // import store
-import useSignup from "../../lib/useSignup";
+import useSignup from "../../lib/hooks/useSignup";
 
 const SignUp = () => {
     const { usernameInput, emailInput, passwordInput, signUpHandler, hideSignupModal } = useSignup()

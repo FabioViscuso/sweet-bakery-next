@@ -1,20 +1,23 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import useStore from '../store/Store'
+
+// import stores
+import useLoginStore from '../lib/store/loginStore';
+import useCartStore from '../lib/store/cartStore';
+import useUIstore from '../lib/store/UIstore';
 
 import type { AppProps } from 'next/app'
 import Layout from '../components/layout/Layout'
 import '../styles/globals.css'
-import RenderedNotificationPopup from '../components/UI/NotificationPopup'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const formattedPath = router.pathname.replace(/\//, '').replace(/-/, ' ');
-  const isNotificationVisible = useStore(state => state.isNotificationVisible)
-  const resetNotification = useStore(state => state.resetNotificationContent);
-  const login = useStore(state => state.loginUser);
-  const initCart = useStore(state => state.replaceCart);
+  const isNotificationVisible = useUIstore(state => state.isNotificationVisible)
+  const resetNotification = useUIstore(state => state.resetNotificationContent);
+  const login = useLoginStore(state => state.loginUser);
+  const initCart = useCartStore(state => state.replaceCart);
 
   /* LOADING CART LOGIC */
   useEffect(() => {
