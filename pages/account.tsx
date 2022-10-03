@@ -10,7 +10,7 @@ const Account = () => {
     const resetCart = useStore(state => state.replaceCart);
 
     function clearCart() {
-        localStorage.removeItem(`cartFor${user}`)
+        localStorage.removeItem(`cartFor${user.username}`)
         resetCart([])
     }
 
