@@ -6,13 +6,17 @@ import useStore from '../store/Store'
 import type { AppProps } from 'next/app'
 import Layout from '../components/layout/Layout'
 import '../styles/globals.css'
+import RenderedNotificationPopup from '../components/UI/NotificationPopup'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const formattedPath = router.pathname.replace(/\//, '').replace(/-/, ' ');
+  const isNotificationVisible = useStore(state => state.isNotificationVisible)
+  const resetNotification = useStore(state => state.resetNotificationContent);
   const login = useStore(state => state.loginUser);
   const initCart = useStore(state => state.replaceCart);
 
+  /* LOADING CART LOGIC */
   useEffect(() => {
     // try to fetch the stored user
     const storedUser: { username: string, email: string, accessToken: string } = JSON.parse(localStorage.getItem('currentUser') as string);
@@ -27,6 +31,17 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
     }
   }, [login, initCart])
+
+  /* NOTIFICATION POPUP LOGIC */
+  useEffect(() => {
+    const id = setTimeout(() => {
+      resetNotification()
+    }, 3000)
+
+    return () => {
+      clearTimeout(id)
+    }
+  }, [isNotificationVisible, resetNotification])
 
   return (
     <>
