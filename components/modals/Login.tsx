@@ -1,43 +1,13 @@
 // Import createPortal
-import React, { useRef } from "react";
+import React from "react";
 import { createPortal } from "react-dom";
 
-// import store
-import useStore from "../../store/Store";
+// import useLogin hook
+import useLogin from "../../lib/useLogin";
 
 const Login = () => {
 
-    const hideLoginModal = useStore(store => store.hideLoginModal);
-    const login = useStore(store => store.loginUser)
-
-    const usernameInput = useRef<HTMLInputElement>(null);
-    const passwordInput = useRef<HTMLInputElement>(null);
-
-    const loginHandler = async (event: React.FormEvent) => {
-        event.preventDefault();
-        const username = usernameInput.current!.value;
-        const password = passwordInput.current!.value;
-        if (username.length >= 6 && password.length >= 8) {
-            const response = await fetch('api/users/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: username, password: password })
-            })
-            if (response.ok) {
-                const data = await response.json()
-                login(data.username, data.email, data.accessToken)
-                hideLoginModal()
-                localStorage.setItem('currentUser', JSON.stringify({ username: data.username, email: data.email, accessToken: data.accessToken }))
-            } else {
-                const error = await response.json()
-                alert(JSON.stringify(error))
-            }
-        } else {
-            alert('check your inputs')
-        }
-    }
+    const { usernameInput, passwordInput, loginHandler, hideLoginModal } = useLogin()
 
     return (
         <div className="py-12 bg-gray-700 bg-opacity-50 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0">

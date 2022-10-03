@@ -1,95 +1,17 @@
 import Router from "next/router";
 import React, { useEffect, useRef } from "react";
+import useUserAccount from "../lib/useUserAccount";
 import useStore from "../store/Store";
 
 const Account = () => {
-    const usernameInputRef = useRef<HTMLInputElement>(null);
-    const emailInputRef = useRef<HTMLInputElement>(null);
-    const passInputRef = useRef<HTMLInputElement>(null);
+    const { user, usernameInputRef, emailInputRef, passwordInputRef, changeMail, changePassword, deleteUser } = useUserAccount()
+
     const isLogged = useStore(state => state.isLogged);
-    const user = useStore(state => state.currentUser);
-    const login = useStore(state => state.loginUser);
-    const logout = useStore(state => state.logoutUser);
     const resetCart = useStore(state => state.replaceCart);
 
     function clearCart() {
-        localStorage.removeItem(`cartFor${user}`)
+        localStorage.removeItem(`cartFor${user.username}`)
         resetCart([])
-    }
-
-    async function changeMail(event: React.FormEvent) {
-        event.preventDefault()
-        let emailInputValue = emailInputRef.current!.value
-        if (emailInputValue.length > 7 && emailInputValue.includes('@')) {
-            const response = await fetch('api/users/changemail', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: user.username, newEmail: emailInputValue, accessToken: user.accessToken })
-            })
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data)
-                login(data.username, data.email, data.accessToken)
-                localStorage.setItem('currentUser', JSON.stringify({ username: data.username, email: data.email, accessoToken: data.accessToken }))
-                emailInputRef.current!.value = ''
-            } else {
-                const data = await response.json()
-                alert(data.message)
-            }
-        } else {
-            alert('check the validity of email input')
-        }
-    }
-
-    async function changePassword(event: React.FormEvent) {
-        event.preventDefault()
-        let passInputValue = passInputRef.current!.value
-        if (passInputValue.length > 7) {
-            const response = await fetch('api/users/changepsw', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: user.username, newPassword: passInputValue, accessToken: user.accessToken })
-            })
-
-            if (response.ok) {
-                passInputRef.current!.value = ''
-            } else {
-                const data = await response.json()
-                alert(data.message)
-            }
-        } else {
-            alert('check the validity of password input')
-        }
-    }
-
-    async function deleteUser(event: React.FormEvent) {
-        event.preventDefault()
-        let usernameInputValue = usernameInputRef.current!.value
-        if (usernameInputValue === user.username) {
-            const response = await fetch('api/users/delete', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: usernameInputValue, accessToken: user.accessToken })
-            })
-
-            if (response.ok) {
-                usernameInputRef.current!.value = ''
-                localStorage.removeItem(`cartFor${user.username}`)
-                logout();
-            } else {
-                const data = await response.json()
-                alert(data.message)
-            }
-        } else {
-            alert('typed username is different from your username')
-        }
     }
 
     useEffect(() => {
@@ -109,14 +31,14 @@ const Account = () => {
             </form>
             <form onSubmit={changePassword} className="flex flex-col gap-5 items-center mb-8">
                 <label htmlFor="changepassword" className="text-gray-800 text-2xl font-indieflower leading-tight tracking-normal">Change password</label>
-                <input type='password' id="changepassword" name="changepassword" ref={passInputRef} minLength={8} className="text-gray-600 focus:outline-none focus:border focus:border-pink-300 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="New Password Here" />
+                <input type='password' id="changepassword" name="changepassword" ref={passwordInputRef} minLength={8} className="text-gray-600 focus:outline-none focus:border focus:border-pink-300 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="New Password Here" />
                 <button type="submit" className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-300 transition duration-150 ease-in-out hover:bg-pink-300 bg-pink-200 rounded text-gray-900 hover:text-gray-900 px-8 py-2 text-md">Submit</button>
             </form>
             <h2 className="font-caveat text-4xl mt-10 mb-4">Other settings</h2>
             <button onClick={clearCart} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-300 transition duration-150 ease-in-out hover:bg-pink-300 bg-pink-200 rounded text-gray-900 hover:text-gray-900 px-8 py-2 mb-10 text-md">Clear Cart</button>
             <form onSubmit={deleteUser} className="flex flex-col gap-5 items-center">
                 <label htmlFor="deleteaccount" className="text-gray-800 text-2xl font-indieflower leading-tight tracking-normal">Delete your account</label>
-                <input type='text' id="deleteaccount" name="deleteaccount" minLength={8} ref={usernameInputRef} className="text-gray-600 focus:outline-none focus:border focus:border-pink-300 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="Retype your username" />
+                <input type='text' id="deleteaccount" name="deleteaccount" minLength={6} ref={usernameInputRef} className="text-gray-600 focus:outline-none focus:border focus:border-pink-300 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="Retype your username" />
                 <button type="submit" className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-300 transition duration-150 ease-in-out hover:bg-pink-300 bg-pink-200 rounded text-gray-900 hover:text-gray-900 px-8 py-2 text-md">Delete</button>
             </form>
         </div>

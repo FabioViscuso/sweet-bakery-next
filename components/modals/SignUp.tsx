@@ -1,41 +1,11 @@
 // Import dependenciens
-import { useRef } from "react";
 import { createPortal } from "react-dom";
 
 // import store
-import useStore from "../../store/Store";
+import useSignup from "../../lib/useSignup";
 
 const SignUp = () => {
-
-    const hideSignupModal = useStore(store => store.hideSignupModal);
-
-    const usernameInput = useRef<HTMLInputElement>(null);
-    const emailInput = useRef<HTMLInputElement>(null);
-    const passwordInput = useRef<HTMLInputElement>(null);
-
-    const signUpHandler = async (event: React.FormEvent) => {
-        event.preventDefault();
-        const username = usernameInput.current!.value;
-        const email = emailInput.current!.value;
-        const password = passwordInput.current!.value;
-        if (username.length >= 6 && email.includes('@') && password.length >= 8) {
-            const response = await fetch('/api/users/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: username, email: email, password: password })
-            })
-
-            if (response.ok) {
-                hideSignupModal()
-            } else {
-                alert('could not sign up')
-            }
-        } else {
-            alert('check your inputs')
-        }
-    }
+    const { usernameInput, emailInput, passwordInput, signUpHandler, hideSignupModal } = useSignup()
 
     return (
         <div className="py-12 bg-gray-700 bg-opacity-50 transition duration-150 ease-in-out absolute z-10 top-0 right-0 bottom-0 left-0">

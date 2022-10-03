@@ -1,15 +1,17 @@
 import Head from 'next/head'
 import { Footer } from './Footer'
 import { Navbar } from './Navbar'
+import RenderedNotificationPopup from '../UI/NotificationPopup'
+import useStore from '../../store/Store'
 
 interface Props {
     children: JSX.Element | JSX.Element[]
 }
 
 export default function Layout({ children }: Props) {
+    const isNotificationVisible = useStore(store => store.isNotificationVisible)
     return (
         <>
-            <Navbar />
             <Head>
                 <link rel="icon" href="/favicon.ico" />
                 <meta
@@ -21,6 +23,8 @@ export default function Layout({ children }: Props) {
                 <meta name="og:title" content="Hello! That's me!" />
                 <meta name="twitter:card" content="summary_large_image" />
             </Head>
+            <Navbar />
+            {isNotificationVisible && <RenderedNotificationPopup />}
             <div className='h-full flex flex-col justify-between text-center md:text-left'>
                 <>{children}</>
                 <Footer />

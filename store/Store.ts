@@ -36,15 +36,16 @@ export interface CartStats {
 export type CartItemWithStats = CartItem & CartStats;
 
 export interface NotificationSlice {
+    isNotificationVisible: boolean,
     isOkStatus: boolean,
     message: string,
-    setNotificationContent: (isOk: boolean, message: string) => void
+    setNotificationContent: (isOk: boolean, message: string) => void,
+    resetNotificationContent: () => void,
 }
 
 export interface UiSlice {
     isLoginModalOpen: boolean,
     isSignupModalOpen: boolean,
-    isNotificationPopupOpen: boolean,
     isCartVisible: boolean,
     showLoginModal: () => void,
     hideLoginModal: () => void,
@@ -52,8 +53,6 @@ export interface UiSlice {
     showCart: () => void,
     hideCart: () => void,
     hideSignupModal: () => void,
-    showNotificationPopup: () => void,
-    hideNotificationPopup: () => void,
 }
 
 export type GeneralState = LoginSlice & CartSlice & NotificationSlice & UiSlice
@@ -143,11 +142,19 @@ const useStore = create<GeneralState>(
 
 
             /* NOTIFICATION */
+            isNotificationVisible: false,
             isOkStatus: false,
             message: '',
-            isNotificationPopupOpen: false,
-            setNotificationContent: (isOk, message) => set((state) => ({ isOkStatus: isOk, message: message })),
-
+            setNotificationContent: (isOk, message) => set((state) => ({
+                isNotificationVisible: state.isNotificationVisible = true,
+                isOkStatus: state.isOkStatus = isOk,
+                message: state.message = message
+            })),
+            resetNotificationContent: () => set((state) => ({
+                isNotificationVisible: state.isNotificationVisible = false,
+                isOkStatus: state.isOkStatus = false,
+                message: state.message = ''
+            })),
 
             /* UI COMPONENTS */
             isLoginModalOpen: false,
@@ -159,8 +166,6 @@ const useStore = create<GeneralState>(
             hideSignupModal: () => set((state) => ({ isSignupModalOpen: state.isSignupModalOpen = false })),
             showCart: () => set((state) => ({ isCartVisible: state.isCartVisible = true })),
             hideCart: () => set((state) => ({ isCartVisible: state.isCartVisible = false })),
-            showNotificationPopup: () => set((state) => ({ isNotificationPopupOpen: state.isNotificationPopupOpen = true })),
-            hideNotificationPopup: () => set((state) => ({ isNotificationPopupOpen: state.isNotificationPopupOpen = false })),
         }
     )
 )
