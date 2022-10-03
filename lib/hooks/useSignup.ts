@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import useUIstore from "./store/UIstore";
+import useUIstore from "../store/UIstore";
 
 export default function useSignup() {
     const setNotification = useUIstore(store => store.setNotificationContent);

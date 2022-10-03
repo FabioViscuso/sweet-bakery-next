@@ -33,8 +33,10 @@ const useCartStore = create<CartSlice>(
             totalQuantity: 0,
             totalAmount: 0,
             addToCart: (newItem: CartItem) => {
+                // check if item is already in the cart
                 const existingItem = get().items.find(item => item.id === newItem.id)
-                if (!existingItem && typeof existingItem === 'undefined') {
+                // if not, add it to state with initial qty and amount
+                if (!existingItem || typeof existingItem === 'undefined') {
                     const toAdd: CartItemWithStats = { ...newItem, quantity: 1, totalAmount: newItem.price };
                     set(state => {
                         return {
@@ -42,6 +44,8 @@ const useCartStore = create<CartSlice>(
                         }
                     })
                 } else {
+                    // if it exists, just add to the quantity
+                    existingItem.totalAmount += newItem.price;
                     existingItem.quantity++;
                 }
                 set(state => { return { totalAmount: Number((state.totalAmount + newItem.price).toFixed(2)) } })

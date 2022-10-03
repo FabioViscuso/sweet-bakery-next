@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import useLoginStore from "./store/loginStore";
-import useUIstore from "./store/UIstore";
+import useLoginStore from "../store/loginStore";
+import useUIstore from "../store/UIstore";
 
 export default function useLogin() {
     const login = useLoginStore(store => store.loginUser);

@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import useLoginStore from "./store/loginStore";
-import useUIstore from "./store/UIstore";
+import useLoginStore from "../store/loginStore";
+import useUIstore from "../store/UIstore";
 
 export default function useUserAccount() {
     const usernameInputRef = useRef<HTMLInputElement>(null);

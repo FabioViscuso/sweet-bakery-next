@@ -3,7 +3,7 @@ import React from "react";
 import { createPortal } from "react-dom";
 
 // import useLogin hook
-import useLogin from "../../lib/useLogin";
+import useLogin from "../../lib/hooks/useLogin";
 
 const Login = () => {
 
