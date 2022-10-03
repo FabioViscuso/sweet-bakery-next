@@ -1,9 +1,9 @@
 import { createPortal } from "react-dom";
-import useStore from "../../store/Store";
+import useUIstore from "../../lib/store/UIstore";
 
 function NotificationPopup() {
-    const isNotificationOk = useStore(state => state.isOkStatus);
-    const notificationMessage = useStore(state => state.message)
+    const isNotificationOk = useUIstore(state => state.isOkStatus);
+    const notificationMessage = useUIstore(state => state.message)
 
     return (
         <section className="fixed bg-[#00000088] backdrop-blur-sm

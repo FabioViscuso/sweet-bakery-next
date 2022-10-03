@@ -1,11 +1,16 @@
-// import store
-import useStore, { CartItem } from "../../store/Store";
+// import stores
+import useLoginStore from "../../lib/store/loginStore";
+import useCartStore, { CartItem } from "../../lib/store/cartStore";
+import useUIstore from "../../lib/store/UIstore";
 
 export const ProductItem = (props: CartItem) => {
+    const user = useLoginStore(store => store.currentUser);
+    const items = useCartStore(store => store.items);
+    const addItem = useCartStore(store => store.addToCart);
+    const showNotification = useUIstore(store => store.setNotificationContent);
 
-    const addItem = useStore(state => state.addToCart)
     const addToCartHandler = () => {
-        if (useStore.getState().isLogged) {
+        if (useLoginStore.getState().isLogged) {
             const newCartItem = {
                 id: props.id,
                 imgUrl: props.imgUrl,
@@ -13,9 +18,10 @@ export const ProductItem = (props: CartItem) => {
                 description: props.description,
                 price: props.price,
             }
-            addItem(newCartItem)
+            addItem(newCartItem);
+            localStorage.setItem(`cartFor${user.username}`, JSON.stringify(items));
         } else {
-            alert('Hello! Please login to start shopping')
+            showNotification(false, 'Hello! Please login to start shopping');
         }
     }
 

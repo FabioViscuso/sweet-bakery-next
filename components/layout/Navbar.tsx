@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // import store
-import useStore from '../../store/Store';
+import useLoginStore from '../../lib/store/loginStore';
+import useUIstore from '../../lib/store/UIstore';
 
 // import components
 import { CartButton } from "../shop/CartButton";
@@ -16,12 +17,12 @@ import Image from 'next/image';
 
 export const Navbar = () => {
     const router = useRouter()
-    const isLogged = useStore(state => state.isLogged)
-    const isLoginModalOpen = useStore(state => state.isLoginModalOpen)
-    const isSignupModalOpen = useStore(state => state.isSignupModalOpen)
-    const showLoginModal = useStore(state => state.showLoginModal)
-    const showSignupModal = useStore(state => state.showSignupModal)
-    const logout = useStore(state => state.logoutUser)
+    const isLogged = useLoginStore(state => state.isLogged)
+    const isLoginModalOpen = useUIstore(state => state.isLoginModalOpen)
+    const isSignupModalOpen = useUIstore(state => state.isSignupModalOpen)
+    const showLoginModal = useUIstore(state => state.showLoginModal)
+    const showSignupModal = useUIstore(state => state.showSignupModal)
+    const logout = useLoginStore(state => state.logoutUser)
 
     return (
         <nav className="flex flex-row justify-between items-center px-2 md:px-10 h-24 sticky top-0 left-0 right-0 z-100 bg-[#e2c3c8]">

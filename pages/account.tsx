@@ -1,13 +1,17 @@
+// import hooks
 import Router from "next/router";
 import React, { useEffect, useRef } from "react";
 import useUserAccount from "../lib/useUserAccount";
-import useStore from "../store/Store";
+
+// import stores
+import useLoginStore from "../lib/store/loginStore";
+import useCartStore from "../lib/store/cartStore";
 
 const Account = () => {
     const { user, usernameInputRef, emailInputRef, passwordInputRef, changeMail, changePassword, deleteUser } = useUserAccount()
 
-    const isLogged = useStore(state => state.isLogged);
-    const resetCart = useStore(state => state.replaceCart);
+    const isLogged = useLoginStore(state => state.isLogged);
+    const resetCart = useCartStore(state => state.replaceCart);
 
     function clearCart() {
         localStorage.removeItem(`cartFor${user.username}`)

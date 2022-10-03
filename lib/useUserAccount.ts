@@ -1,15 +1,16 @@
 import { useRef } from "react";
-import useStore from "../store/Store";
+import useLoginStore from "./store/loginStore";
+import useUIstore from "./store/UIstore";
 
 export default function useUserAccount() {
     const usernameInputRef = useRef<HTMLInputElement>(null);
     const emailInputRef = useRef<HTMLInputElement>(null);
     const passwordInputRef = useRef<HTMLInputElement>(null);
 
-    const user = useStore(store => store.currentUser);
-    const login = useStore(store => store.loginUser);
-    const logout = useStore(store => store.logoutUser)
-    const setNotification = useStore(store => store.setNotificationContent);
+    const user = useLoginStore(store => store.currentUser);
+    const login = useLoginStore(store => store.loginUser);
+    const logout = useLoginStore(store => store.logoutUser)
+    const setNotification = useUIstore(store => store.setNotificationContent);
 
     async function changeMail(event: React.FormEvent) {
         event.preventDefault()
