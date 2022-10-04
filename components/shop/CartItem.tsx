@@ -1,4 +1,5 @@
 // import stores
+import React from 'react';
 import useCartStore, { CartItemWithStats } from '../../lib/store/cartStore';
 import useLoginStore from '../../lib/store/loginStore';
 
@@ -18,14 +19,17 @@ export const CartItemComponent = (props: CartItemWithStats) => {
     const addItem = useCartStore(state => state.addToCart);
     const removeItem = useCartStore(state => state.removeFromCart);
 
-    function removeHandler() {
+    function removeHandler(event: React.MouseEvent) {
+        event.stopPropagation()
         removeItem(id)
         localStorage.setItem(`cartFor${user.username}`, JSON.stringify(items))
     }
-    function addHandler() {
+    function addHandler(event: React.MouseEvent) {
+        event.stopPropagation()
         addItem(currentItem)
         localStorage.setItem(`cartFor${user.username}`, JSON.stringify(items))
     }
+
     return (
         <li className='flex flex-row justify-between rounded-md bg-slate-200 font-caveat'>
             <header className='py-4 px-3'>

@@ -9,6 +9,8 @@ export default function Document() {
                 <div id="loginModal"></div>
                 <div id="signupModal"></div>
                 <div id="notificationPopup"></div>
+                <div id="cartContainer"></div>
+                <div id="navbarContainer"></div>
                 < NextScript />
             </body>
         </Html>

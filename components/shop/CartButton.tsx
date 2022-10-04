@@ -7,7 +7,7 @@ import useUIstore from '../../lib/store/UIstore';
 import useCartStore from '../../lib/store/cartStore';
 
 // import components
-import { Cart } from './Cart';
+import { RenderedCart } from './Cart';
 
 export const CartButton = () => {
     const items = useCartStore((state) => state.items)
@@ -50,7 +50,7 @@ export const CartButton = () => {
                 <span className=''>My Cart</span>
                 <span className='bg-pink-100 text-gray-900 w-10 h-10 rounded-full leading-10'>{totalItems}</span>
             </button>
-            {isCartVisible && <Cart items={items} />}
+            {isCartVisible && <RenderedCart items={items} />}
         </div>
     );
 };

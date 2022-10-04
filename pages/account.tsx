@@ -25,7 +25,7 @@ const Account = () => {
     }, [isLogged])
 
     return (
-        <div className="flex flex-col min-h-screen max-w-4xl px-2 mx-auto py-4 pt-8">
+        <div className="flex flex-col min-h-screen max-w-4xl px-2 mx-auto py-4 pt-32">
             <h1 className="font-caveat text-6xl mb-10">Hello, {user.username}!</h1>
             <form onSubmit={changeMail} className="flex flex-col gap-5 items-center mb-8">
                 <label htmlFor="changemail" className="text-gray-800 text-2xl font-indieflower leading-tight tracking-normal">Change email</label>

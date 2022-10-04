@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { Footer } from './Footer'
-import { Navbar } from './Navbar'
 import RenderedNotificationPopup from '../UI/NotificationPopup'
 import useUIstore from '../../lib/store/UIstore'
+import { Navbar } from './Navbar'
 
 interface Props {
     children: JSX.Element | JSX.Element[]
@@ -23,10 +23,12 @@ export default function Layout({ children }: Props) {
                 <meta name="og:title" content="Sweet Bakery" />
                 <meta name="twitter:card" content="summary_large_image" />
             </Head>
-            <Navbar />
             {isNotificationVisible && <RenderedNotificationPopup />}
+            <Navbar />
             <div className='h-full flex flex-col justify-between text-center md:text-left'>
-                <>{children}</>
+                <>
+                    {children}
+                </>
                 <Footer />
             </div>
         </>
