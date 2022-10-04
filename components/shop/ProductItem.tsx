@@ -20,6 +20,7 @@ export const ProductItem = (props: CartItem) => {
                 price: props.price,
             }
             addItem(newCartItem);
+            localStorage.setItem(`cartFor${user.username}`, JSON.stringify(items));
         } else {
             showNotification(false, 'Hello! Please login to start shopping');
         }
@@ -27,7 +28,7 @@ export const ProductItem = (props: CartItem) => {
 
     useEffect(() => {
         localStorage.setItem(`cartFor${user.username}`, JSON.stringify(items));
-    }, [items, user.username])
+    }, [items])
 
     return (
         <li className='flex flex-row flex-wrap rounded-md bg-slate-100 w-full max-w-sm font-indieflower'>
