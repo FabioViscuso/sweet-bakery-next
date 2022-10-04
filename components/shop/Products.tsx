@@ -13,7 +13,7 @@ const DUMMY_PRODUCTS = [
 export const Products = () => {
     return (
         <section className='flex flex-col justify-center items-center w-full'>
-            <h2 className='text-4xl mb-8 font-indieflower'>Buy your favorite products</h2>
+            <h2 className='text-4xl mb-8 font-indieflower'>{"You can't go wrong: they're all delicious"}</h2>
             <ul className='shop-grid gap-5 justify-between items-center w-full px-5'>
                 {
                     DUMMY_PRODUCTS.map(item =>
