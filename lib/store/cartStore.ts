@@ -60,6 +60,7 @@ const useCartStore = create<CartSlice>(
                 if (item!.quantity === 1) {
                     set((state) => { return { items: state.items.filter((item) => item.id !== id) } })
                 } else {
+                    item!.totalAmount -= item!.price;
                     item!.quantity--;
                 }
                 set(state => { return { totalAmount: Number((state.totalAmount - item!.price).toFixed(2)) } })

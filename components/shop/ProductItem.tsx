@@ -31,7 +31,7 @@ export const ProductItem = (props: CartItem) => {
     }, [items])
 
     return (
-        <li className='flex flex-row flex-wrap rounded-md bg-slate-100 w-full max-w-sm font-indieflower'>
+        <li className='flex flex-row flex-wrap rounded-md bg-slate-100 w-full font-indieflower'>
             <img className='w-full h-40 object-cover rounded-tl-md rounded-tr-md' src={props.imgUrl} alt="" />
             <div className='py-4 px-4'>
                 <header>

@@ -7,8 +7,8 @@ import useLoginStore from '../lib/store/loginStore';
 import useCartStore from '../lib/store/cartStore';
 import useUIstore from '../lib/store/UIstore';
 
-import type { AppProps } from 'next/app'
 import Layout from '../components/layout/Layout'
+import type { AppProps } from 'next/app'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
